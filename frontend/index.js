@@ -6,19 +6,40 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 scene.background =new THREE.Color("rgba(128, 128, 128)");
 
-// Load 3d model here:
+
+// Flag to switch between large and small model
+const LARGE_MODEL = true;
+
 const loader = new GLTFLoader()
-loader.load('assets/base.gltf', function (gltf) {
-    console.log(gltf)
-    const root = gltf.scene;
-    root.scale.set(100, 100, 100)
-    root.position.set(1, -10, 10)
-    scene.add(root)
-}, function (xhr) {
-    console.log((xhr.loaded/xhr.total * 100) + '% loaded')
-}, function (error) {
-    console.log('Error loading')
-})
+if (LARGE_MODEL == true) {
+    // Load desired 3d model here (bernburg model, large)
+    loader.load('assets/bernburg_spaces_english.glb', function (glb) {
+        console.log(glb)
+        const root = glb.scene;
+        root.scale.set(10, 10, 10)
+        // root.position.set(1, -10, 10)
+        root.position.set(0, -10, -10)
+        scene.add(root)
+    }, function (xhr) {
+        console.log((xhr.loaded/xhr.total * 100) + '% loaded')
+    }, function (error) {
+        console.log('Error loading')
+    })
+} else {
+    // Load desired 3d model here (test model, very small)
+    loader.load('assets/base.gltf', function (gltf) {
+        console.log(gltf)
+        const root = gltf.scene;
+        root.scale.set(100, 100, 100)
+        root.position.set(1, -10, 10)
+        scene.add(root)
+    }, function (xhr) {
+        console.log((xhr.loaded/xhr.total * 100) + '% loaded')
+    }, function (error) {
+        console.log('Error loading')
+    })
+}
+
 
 
 
@@ -50,9 +71,9 @@ camera.position.y = 1;
 camera.rotation.z = .2;
 scene.add(camera)
 
-const controls = new OrbitControls(camera, canvas)
- controls.enableZoom = true;
- controls.enableDamping = false;
+// const controls = new OrbitControls(camera, canvas)
+//  controls.enableZoom = true;
+//  controls.enableDamping = false;
 
 
 const renderer = new THREE.WebGLRenderer({
@@ -73,9 +94,8 @@ window.addEventListener('resize', function(){
 
 function animate() {
     requestAnimationFrame(animate);
-  
+
     camera.rotation.z += 0.01;
-  
   
     renderer.render(scene, camera);
   }

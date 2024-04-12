@@ -1,8 +1,8 @@
 from locust import HttpUser, task, between
 
-class HelloWorldUser(HttpUser):
+class UserBehavior(HttpUser):
     wait_time = between(0.5, 2.5)
 
     @task
-    def hello_world(self):
-        self.client.get('/')
+    def download_memorise_model(self):
+        self.client.get('/assets/bernburg_spaces_english.glb')
